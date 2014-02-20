@@ -1,4 +1,4 @@
-// (function () {
+(function () {
 
     var roomName,
         myName = prompt("What's your name?", "Son Goku"),
@@ -126,4 +126,4 @@
         });
     });
 
-// } () );
+} () );
