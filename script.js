@@ -1,14 +1,23 @@
 // (function () {
 
-    var roomName = location.hash.substr(1) || "" + +new Date,
+    var roomName,
         myName = prompt("What's your name?", "Son Goku"),
         executeDelta = !1,
         storeDeltas = !1,
         sendDelta = !1,
         deltas = [],
+        isNew = !1,
         editor,
         lobby;
 
+    if (location.hash.substr(1)) {
+        roomName = location.hash.substr(1);
+    }
+    else {
+        roomName = "" + +new Date;
+        isNew = !0;
+    }
+        
     location.hash = roomName;
     
     console.log('Connecting...');
@@ -53,9 +62,8 @@
 
                 // root's job
                 if (storeDeltas) {
-                    deltas.push(value);
                     console.log("Saving deltas");
-                    room.key('deltas').set(deltas, function (err) {
+                    room.key('deltas').set(editor.getValue(), function (err) {
                         if (err) {
                             throw err;
                         }
@@ -80,7 +88,8 @@
             
             if (value) {
                 sendDelta = !1;
-                deltas = value.concat(deltas);
+                editor.setValue(value);
+                editor.clearSelection();
             }
             else {
                 storeDeltas = !0;
@@ -89,7 +98,6 @@
             editor.getSession().getDocument().applyDeltas(deltas);
             executeDelta = !0;
             sendDelta = !0;
-            deltas = [];
 
             editor.on("change", function (e) {
                 if (sendDelta) {
@@ -102,9 +110,8 @@
                     });
 
                     if (storeDeltas) {
-                        deltas.push(e.data);
                         console.log("Saving deltas");
-                        room.key('deltas').set(deltas, function (err) {
+                        room.key('deltas').set(editor.getValue(), function (err) {
                             if (err) {
                                 throw err;
                             }
@@ -112,6 +119,10 @@
                     }
                 }
             });
+            
+            if (isNew) {
+                alert("You can now share your URL to other collaborators! Hoorah!");
+            }
         });
     });
 
