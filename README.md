@@ -1,3 +1,5 @@
+#GoInstant is not available anymore after being acquired by Salesforce. sad
+
 # SnippeRT (Snippet in Real-time)
 
 I love Javascript then I thought of creating this app to discuss Javascript more easily to anyone. I also use it to help colleagues debug their codes.
